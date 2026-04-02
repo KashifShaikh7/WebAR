@@ -4,9 +4,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My AR Project</title>
 
-  <!-- MindAR + Three.js -->
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-three.prod.js"></script>
-
   <style>
     body { margin: 0; overflow: hidden; }
     #btn {
@@ -19,8 +16,16 @@
       color: white;
       border: none;
       border-radius: 10px;
+      z-index: 2;
     }
   </style>
+
+  <!-- ✅ Load Three.js FIRST -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.150.1/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.150.1/examples/js/loaders/GLTFLoader.js"></script>
+
+  <!-- ✅ THEN MindAR -->
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-three.prod.js"></script>
 </head>
 
 <body>
@@ -28,43 +33,63 @@
 <button id="btn">Rotate</button>
 
 <script>
-const start = async () => {
-  const mindarThree = new window.MINDAR.IMAGE.MindARThree({
-    container: document.body,
-    imageTargetSrc: './targets.mind',
-  });
+window.addEventListener("DOMContentLoaded", () => {
 
-  const {renderer, scene, camera} = mindarThree;
+  const start = async () => {
+    console.log("Starting AR...");
 
-  const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
-  scene.add(light);
+    const mindarThree = new window.MINDAR.IMAGE.MindARThree({
+      container: document.body,
+      imageTargetSrc: './targets.mind',
+    });
 
-  const anchor = mindarThree.addAnchor(0);
+    const {renderer, scene, camera} = mindarThree;
 
-  const loader = new THREE.GLTFLoader();
-  loader.load('./model.glb', (gltf) => {
-    const model = gltf.scene;
-    model.scale.set(0.5, 0.5, 0.5);
-    anchor.group.add(model);
+    // Light
+    const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
+    scene.add(light);
 
-    // rotate button
-    document.getElementById("btn").onclick = () => {
-      model.rotation.y += Math.PI / 4;
-    };
-  });
+    // Anchor
+    const anchor = mindarThree.addAnchor(0);
 
-  await mindarThree.start();
-  renderer.setAnimationLoop(() => {
-    renderer.render(scene, camera);
-  });
-};
+    // Load model
+    const loader = new THREE.GLTFLoader();
+    loader.load(
+      './model.glb',
+      (gltf) => {
+        console.log("Model loaded");
 
-start();
+        const model = gltf.scene;
+        model.scale.set(0.5, 0.5, 0.5);
+        anchor.group.add(model);
+
+        // Rotate button
+        document.getElementById("btn").onclick = () => {
+          model.rotation.y += Math.PI / 4;
+        };
+      },
+      undefined,
+      (error) => {
+        console.error("Model load error:", error);
+      }
+    );
+
+    // Start AR
+    try {
+      await mindarThree.start();
+      console.log("AR started ✅");
+    } catch (e) {
+      console.error("AR failed ❌", e);
+    }
+
+    renderer.setAnimationLoop(() => {
+      renderer.render(scene, camera);
+    });
+  };
+
+  start();
+});
 </script>
-
-<!-- Three.js loaders -->
-<script src="https://cdn.jsdelivr.net/npm/three@0.150.1/build/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.150.1/examples/js/loaders/GLTFLoader.js"></script>
 
 </body>
 </html>
