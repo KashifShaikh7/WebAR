@@ -2,52 +2,34 @@
 <html>
 
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>A-Frame: Image Targets Example</title>
-  <script crossorigin="anonymous" src="./external/scripts/8frame-1.5.0.min.js"></script>
-
+  <script src="./external/scripts/8frame-1.5.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/aframe-extras@6.1.1/dist/aframe-extras.min.js"></script>
-  
-  <script src="https://cdn.jsdelivr.net/npm/@8thwall/engine-binary@1/dist/xr.js" async crossorigin="anonymous" data-preload-chunks="slam"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@8thwall/landing-page@1/dist/landing-page.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@8thwall/xrextras@1/dist/xrextras.js" crossorigin="anonymous"></script>
-  
+  <script src="https://cdn.jsdelivr.net/npm/@8thwall/engine-binary@1/dist/xr.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@8thwall/xrextras@1/dist/xrextras.js"></script>
 </head>
+
 <body>
   <script src="bundle.js"></script>
-  <a-scene xrextras-gesture-detector landing-page xrextras-loading xrextras-runtime-error
-    renderer="colorManagement:true" xrweb="disableWorldTracking: true">
+
+  <a-scene xrweb="disableWorldTracking: true" xrextras-loading>
 
     <a-assets>
-      <a-asset-item id="jelly-glb" src="assets/AnimatedBuilding.glb"></a-asset-item>
-      <img id="jelly-thumb" src="assets/video-target.jpg">
-      <video id="jelly-video" autoplay muted crossorigin="anonymous" loop="true" src="assets/jellyfish-video.mp4">
-      </video>
+      <a-asset-item id="model" src="assets/AnimatedBuilding.glb"></a-asset-item>
     </a-assets>
 
-    <a-camera position="0 4 10" raycaster="objects: .cantap" cursor="fuse: false; rayOrigin: mouse;">
-    </a-camera>
+    <a-camera></a-camera>
 
-    <a-light type="directional" intensity="0.5" position="1 1 1"></a-light>
-
-    <a-light type="ambient" intensity="1"></a-light>
-
-    <!-- Note: "name:" must be set to the name of the image target -->
-    <xrextras-named-image-target name="video-target">
-      <a-entity xrextras-play-video="video: #jelly-video; thumb: #jelly-thumb; canstop: true"
-        geometry="primitive: plane; height: 1; width: 0.79;"></a-entity>
-    </xrextras-named-image-target>
-
-    <!-- Note: "name:" must be set to the name of the image target  -->
-    <xrextras-named-image-target name="Building">
-      <!-- Add a child entity that can be rotated independently of the image target. -->
-      <a-entity xrextras-one-finger-rotate gltf-model="#jelly-glb" animation-mixer="clip: *"></a-entity>
+    <xrextras-named-image-target name="building">
+      <a-entity 
+        gltf-model="#model"
+        animation-mixer="clip: *"
+        scale="1 1 1">
+      </a-entity>
     </xrextras-named-image-target>
 
   </a-scene>
 
 </body>
-
 </html>
