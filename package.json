@@ -28,7 +28,7 @@
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.2.2"
   },
-  "description": "This uses image targets to display 3D model. It uses the xrextras-named-image-target component to connect an <a-entity> to an image target by name while the xrextras-play-video component enables video playback.",
+  "description": "This example uses image targets to display information about jellyfish on a flyer. It uses the xrextras-named-image-target component to connect an <a-entity> to an image target by name while the xrextras-play-video component enables video playback.",
   "main": "index.js",
   "keywords": [],
   "author": "",
