@@ -21,7 +21,6 @@
     renderer="colorManagement:true" xrweb="disableWorldTracking: true">
 
     <a-assets>
-      <!-- Credit to Poly by Google for the model: https://poly.google.com/view/dA5osnS0Rzj -->
       <a-asset-item id="jelly-glb" src="assets/AnimatedBuilding.glb"></a-asset-item>
       <img id="jelly-thumb" src="assets/video-target.jpg">
       <video id="jelly-video" autoplay muted crossorigin="anonymous" loop="true" src="assets/jellyfish-video.mp4">
@@ -42,7 +41,7 @@
     </xrextras-named-image-target>
 
     <!-- Note: "name:" must be set to the name of the image target  -->
-    <xrextras-named-image-target name="model-target">
+    <xrextras-named-image-target name="Building">
       <!-- Add a child entity that can be rotated independently of the image target. -->
       <a-entity xrextras-one-finger-rotate gltf-model="#jelly-glb" animation-mixer="clip: *"></a-entity>
     </xrextras-named-image-target>
